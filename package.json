@@ -1,0 +1,29 @@
+{
+  "name": "search-index-replicator",
+  "version": "0.0.1",
+  "description": "The replication module for search-index",
+  "main": "lib/replicator.js",
+  "scripts": {
+    "test": "tape"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fergiemcdowall/search-index-replicator.git"
+  },
+  "keywords": [
+    "search",
+    "index",
+    "replication"
+  ],
+  "author": "Fergus McDowall",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fergiemcdowall/search-index-replicator/issues"
+  },
+  "homepage": "https://github.com/fergiemcdowall/search-index-replicator#readme",
+  "dependencies": {
+    "JSONStream": "^1.0.7",
+    "level-ws": "0.0.0",
+    "log-skeleton": "^1.1.0"
+  }
+}
