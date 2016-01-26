@@ -4,11 +4,12 @@ var skeleton = require('log-skeleton');
 var zlib = require('zlib');
 
 module.exports = function (options) {
+  var indexes = options.indexes;
   var log = skeleton((options) ? options.log : undefined);
   var replicator = {};
 
   //ReplicateFromStream
-  replicator.replicateFromSnapShotStream = function (readStream, indexes, callback) {
+  replicator.replicateFromSnapShotStream = function (readStream, callback) {
     var indexesws = levelws(indexes);
     readStream.pipe(zlib.createGunzip())
       .pipe(JSONStream.parse())
@@ -17,7 +18,7 @@ module.exports = function (options) {
   };
 
   //ReplicateFromBatch
-  replicator.replicateFromSnapShotBatch = function (serializedDB, indexes, callback) {
+  replicator.replicateFromSnapShotBatch = function (serializedDB, callback) {
     for (var i = 0; i < serializedDB.length; i++)
       serializedDB[i].type = 'put';
     indexes.batch(serializedDB, function (err) {
@@ -28,7 +29,7 @@ module.exports = function (options) {
   };
 
   //createSnapShotForStream
-  replicator.createSnapShot = function (indexes, callback) {
+  replicator.createSnapShot = function (callback) {
     callback(indexes.createReadStream()
              .pipe(JSONStream.stringify('', '\n', ''))
              .pipe(zlib.createGzip())
@@ -36,7 +37,7 @@ module.exports = function (options) {
   };
 
   //createSnapShotForBatch
-  replicator.createSnapShotBatch = function (indexes, callback) {
+  replicator.createSnapShotBatch = function (callback) {
     //has to be like this in order for norch snapshotting to work
     callback
     (indexes.createReadStream()
