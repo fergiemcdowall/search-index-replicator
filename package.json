@@ -1,6 +1,6 @@
 {
   "name": "search-index-replicator",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "The replication module for search-index",
   "main": "replicator.js",
   "scripts": {
