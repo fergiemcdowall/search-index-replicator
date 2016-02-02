@@ -14,7 +14,10 @@ module.exports = function (options) {
     readStream.pipe(zlib.createGunzip())
       .pipe(JSONStream.parse())
       .pipe(indexesws.createWriteStream())
-      .on('close', callback);
+      .on('close', callback)
+      .on('error', function(err) {
+        console.log(err)
+      });
   };
 
   //ReplicateFromBatch
