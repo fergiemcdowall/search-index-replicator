@@ -18,9 +18,7 @@ module.exports = function (givenOptions, callback) {
         .pipe(JSONStream.parse().on('error', callback))
         .pipe(indexesws.createWriteStream())
         .on('close', callback)
-        .on('error', function(err) {
-          console.log(err)
-        });
+        .on('error', callback);
     };
 
     //ReplicateFromBatch
