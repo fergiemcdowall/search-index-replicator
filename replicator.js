@@ -14,7 +14,7 @@ module.exports = function (givenOptions, callback) {
     //ReplicateFromStream
     Replicator.replicateFromSnapShotStream = function (readStream, callback) {
       var indexesws = levelws(indexes);
-      readStream.pipe(zlib.createGunzip())
+      readStream.pipe(zlib.createGunzip().on('error', callback))
         .pipe(JSONStream.parse().on('error', callback))
         .pipe(indexesws.createWriteStream())
         .on('close', callback)
