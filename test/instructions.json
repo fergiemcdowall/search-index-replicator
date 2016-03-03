@@ -1,0 +1,5 @@
+{"key": "foo", "value": "bar", "mode": "put"}
+{"key": "foo1", "value": "bar1", "mode": "put"}
+{"key": "foo2", "value": "bar2", "mode": "put"}
+{"key": "foo3", "value": "bar3", "mode": "put"}
+{"key": "foo4", "value": "bar4", "mode": "put"}
