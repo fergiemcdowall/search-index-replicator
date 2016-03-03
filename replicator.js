@@ -50,9 +50,7 @@ module.exports = function (givenOptions, callback) {
         .pipe(JSONStream.parse())
         .pipe(indexesws.createWriteStream())
         .on('close', callback)
-        .on('error', function (err) {
-          console.log(err)
-        })
+        .on('error', callback)
     }
 
     // createSnapShotForStream
