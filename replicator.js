@@ -2,6 +2,7 @@ const levelws = require('level-ws')
 const JSONStream = require('JSONStream')
 const zlib = require('zlib')
 const levelup = require('levelup')
+const _defaults = require('lodash.defaults')
 
 var getOptions = function (givenOptions, callback) {
   if (!givenOptions.indexes) {
@@ -25,7 +26,7 @@ module.exports = function (givenOptions, callback) {
     var Replicator = {}
 
     Replicator.DBReadStream = function (ops) {
-      ops = Object.assign({gzip: false}, ops || {})
+      ops = _defaults({gzip: false}, ops || {})
       if (ops.gzip) {
         return options.indexes.createReadStream()
           .pipe(JSONStream.stringify('', '\n', ''))
