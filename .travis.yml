@@ -1,0 +1,10 @@
+sudo: false
+
+language: node_js
+
+node_js:
+  - "3"
+  - "4"
+
+notifications:
+  slack: norch:wLsHiXjnAH5BdtTq3qtAqGp7

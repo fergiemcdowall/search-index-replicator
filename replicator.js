@@ -22,43 +22,34 @@ module.exports = function (givenOptions, callback) {
       return callback(err, null)
     }
 
-    var indexes = options.indexes
     var Replicator = {}
 
-    Replicator.readStream = function () {
-      return indexes.createReadStream()
+    Replicator.DBReadStream = function (ops) {
+      ops = Object.assign({gzip: false}, ops || {})
+      if (ops.gzip) {
+        return options.indexes.createReadStream()
+          .pipe(JSONStream.stringify('', '\n', ''))
+          .pipe(zlib.createGzip())
+      } else {
+        return options.indexes.createReadStream()
+      }
     }
 
-    Replicator.writeStream = function () {
-      var indexesws = levelws(indexes)
+    Replicator.DBWriteStream = function () {
+      var indexesws = levelws(options.indexes)
       return indexesws.createWriteStream()
     }
 
-    Replicator.gzReadStream = function () {
-      return indexes.createReadStream()
-        .pipe(JSONStream.stringify('', '\n', ''))
-        .pipe(zlib.createGzip())
-    }
-
-    Replicator.gzWriteStream = Replicator.replicateFromSnapShotStream
-    Replicator.replicateFromSnapShot = Replicator.replicateFromSnapShotStream
-
-    // ReplicateFromStream
-    Replicator.replicateFromSnapShotStream = function (readStream, callback) {
-      var indexesws = levelws(indexes)
-      readStream.pipe(zlib.createGunzip())
-        .pipe(JSONStream.parse())
-        .pipe(indexesws.createWriteStream())
-        .on('close', callback)
-        .on('error', callback)
-    }
-
-    // createSnapShotForStream
-    Replicator.createSnapShot = function (callback) {
-      callback(indexes.createReadStream()
-        .pipe(JSONStream.stringify('', '\n', ''))
-        .pipe(zlib.createGzip())
-      )
+    Replicator.close = function (callback) {
+      options.indexes.close(function (err) {
+        while (!options.indexes.isClosed()) {
+          // closeing
+        }
+        if (options.indexes.isClosed()) {
+          // closed
+          callback(err)
+        }
+      })
     }
 
     return callback(err, Replicator)
