@@ -26,7 +26,7 @@ module.exports = function (givenOptions, callback) {
     var Replicator = {}
 
     Replicator.DBReadStream = function (ops) {
-      ops = _defaults({gzip: false}, ops || {})
+      ops = _defaults(ops || {}, {gzip: false})
       if (ops.gzip) {
         return options.indexes.createReadStream()
           .pipe(JSONStream.stringify('', '\n', ''))
