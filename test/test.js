@@ -21,7 +21,8 @@ test('make a small search index', function (t) {
       .pipe(si.createWriteStream())
       .on('data', function (data) {
         t.ok(true, ' data recieved')
-      }).on('end', function () {
+      })
+      .on('end', function () {
         t.ok(true, ' stream ended')
         si.close(function (err) {
           t.error(err, ' index closed')
@@ -85,10 +86,13 @@ test('initialise replication target', function (t) {
 })
 
 test('simple replication from one index to another', function (t) {
-  t.plan(1)
+  t.plan(4)
   replicator.DBReadStream()
-    .pipe(replicatorTarget.DBWriteStream())
-    .on('close', function () {
+    .pipe(replicatorTarget.DBWriteStream({ merge: false }))
+    .on('data', function (data) {
+      t.ok(true, 'data event received')
+    })
+    .on('end', function () {
       t.ok(true, 'stream closed')
     })
 })
@@ -119,7 +123,10 @@ test('gzipped replication from one index to another', function (t) {
     .pipe(zlib.createGunzip())
     .pipe(JSONStream.parse())
     .pipe(replicatorTarget2.DBWriteStream())
-    .on('close', function () {
+    .on('data', function (data) {
+      // data
+    })
+    .on('end', function () {
       t.ok(true, 'stream closed')
     })
 })
